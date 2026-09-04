@@ -1,0 +1,16 @@
+{
+  "name": "restaurant-analytics-dashboard",
+  "version": "1.0.0",
+  "description": "Backend-powered restaurant analytics dashboard (Express API + vanilla JS/HTML/CSS frontend)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "csv-parse": "^5.5.6",
+    "express": "^4.19.2"
+  },
+  "overrides": {
+    "qs": "^6.16.0"
+  }
+}

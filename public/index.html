@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurant Analytics Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="vendor/chart.umd.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow-row">
+      <div class="brand">RESTAURANT ANALYTICS <span>/// live dashboard</span></div>
+      <div class="updated" id="datasetMeta">loading dataset&hellip;</div>
+    </div>
+    <h1>Global Restaurant<br><em>Intelligence</em> Board</h1>
+    <p class="lede">A working view into where restaurants sit, how they're priced, who delivers, and what actually earns a good rating — filter by country, city, price tier, or vote count to explore any slice of the data. Every number below is computed live by a small API server reading your dataset.</p>
+  </header>
+
+  <div class="kpis" id="kpiRow"></div>
+
+  <div class="filters">
+    <div class="field">
+      <label for="fCountry">COUNTRY</label>
+      <select id="fCountry"><option value="all">Loading&hellip;</option></select>
+    </div>
+    <div class="field">
+      <label for="fCity">CITY</label>
+      <select id="fCity"><option value="all">All cities</option></select>
+    </div>
+    <div class="field">
+      <label for="fPrice">PRICE RANGE</label>
+      <select id="fPrice">
+        <option value="all">All ranges</option>
+        <option value="1">1 — Budget</option>
+        <option value="2">2 — Casual</option>
+        <option value="3">3 — Upscale</option>
+        <option value="4">4 — Fine dining</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="fVotes">MIN. VOTES</label>
+      <div class="votes-wrap">
+        <input type="range" id="fVotes" min="0" max="2000" step="50" value="0">
+        <span class="votes-out" id="fVotesOut">0</span>
+      </div>
+    </div>
+    <span class="result-count" id="resultCount"></span>
+    <span class="api-status" id="apiStatus"></span>
+    <button class="reset-btn" id="resetBtn">Reset filters</button>
+  </div>
+
+  <div class="section-label">RATINGS &amp; PRICE</div>
+  <div class="grid thirds">
+    <div class="panel">
+      <div class="panel-head"><span class="panel-title">Rating distribution</span><span class="panel-note">count</span></div>
+      <div class="panel-body" data-canvas="chartRatingHist"><canvas id="chartRatingHist"></canvas></div>
+      <div class="panel-foot" id="footRatingHist"></div>
+    </div>
+    <div class="panel c-teal">
+      <div class="panel-head"><span class="panel-title">Avg. rating by price</span><span class="panel-note">1 → 4</span></div>
+      <div class="panel-body" data-canvas="chartPriceRating"><canvas id="chartPriceRating"></canvas></div>
+      <div class="panel-foot" id="footPriceRating"></div>
+    </div>
+    <div class="panel c-rose">
+      <div class="panel-head"><span class="panel-title">Votes vs. rating</span><span class="panel-note">log votes</span></div>
+      <div class="panel-body" data-canvas="chartScatterVotes"><canvas id="chartScatterVotes"></canvas></div>
+      <div class="panel-foot" id="footScatterVotes"></div>
+    </div>
+  </div>
+
+  <div class="section-label">WHERE THE RESTAURANTS ARE</div>
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-head"><span class="panel-title">Top cities</span><span class="panel-note">by restaurant count</span></div>
+      <div class="panel-body" data-canvas="chartTopCities"><canvas id="chartTopCities"></canvas></div>
+      <div class="panel-foot" id="footTopCities"></div>
+    </div>
+    <div class="panel c-teal">
+      <div class="panel-head"><span class="panel-title">Coordinates, colored by rating band</span><span class="panel-note">lat / lng</span></div>
+      <div class="panel-body" data-canvas="chartGeo"><canvas id="chartGeo"></canvas></div>
+      <div class="chip-row" id="geoLegend"></div>
+    </div>
+  </div>
+
+  <div class="section-label">CUISINE &amp; SERVICE</div>
+  <div class="grid">
+    <div class="panel">
+      <div class="panel-head"><span class="panel-title">Most common cuisines</span><span class="panel-note">by listing count</span></div>
+      <div class="panel-body" data-canvas="chartTopCuisines"><canvas id="chartTopCuisines"></canvas></div>
+      <div class="panel-foot" id="footTopCuisines"></div>
+    </div>
+    <div class="panel c-rose">
+      <div class="panel-head"><span class="panel-title">Highest-rated cuisines</span><span class="panel-note">min. 15 restaurants</span></div>
+      <div class="panel-body" data-canvas="chartCuisineRating"><canvas id="chartCuisineRating"></canvas></div>
+      <div class="panel-foot" id="footCuisineRating"></div>
+    </div>
+    <div class="panel wide c-teal">
+      <div class="panel-head"><span class="panel-title">Table booking &amp; online delivery, by price range</span><span class="panel-note">% of restaurants</span></div>
+      <div class="panel-body" data-canvas="chartService"><canvas id="chartService"></canvas></div>
+      <div class="panel-foot" id="footService"></div>
+    </div>
+  </div>
+
+  <footer>
+    <span>Data served live from <code>/api/dashboard</code> by the local Node.js backend, reading your <code>Dataset_.csv</code>.</span>
+    <span>All figures recompute server-side as filters change.</span>
+  </footer>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

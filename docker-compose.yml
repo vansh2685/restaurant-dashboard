@@ -1,0 +1,14 @@
+services:
+  dashboard:
+    build: .
+    image: restaurant-analytics-dashboard:latest
+    container_name: restaurant-analytics-dashboard
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    volumes:
+      # Mount the dataset from the host so you can swap Dataset_.csv
+      # without rebuilding the image — just restart the container.
+      - ./data:/app/data:ro
+    restart: unless-stopped
